@@ -28,6 +28,8 @@ module Mongoid
         @formula_name = options[:formula]
         @options = options
         @fields = {}
+        @sort = options[:sort] || [[:_id, Mongo::ASCENDING]] # [[:value, Mongo::DESCENDING]]
+        @limit = options[:limit] || 0
 
         if options.key?(:fields)
           options[:fields].each do |f|
@@ -65,7 +67,7 @@ module Mongoid
       # containing Mongoid::MapReduce::Document objects (hashes)
       def run
         begin
-          coll = @klass.collection.map_reduce(formula.map, formula.reduce, { :query => @selector, :out => "#map_reduce" } ).find.to_a
+          coll = @klass.collection.map_reduce(formula.map, formula.reduce, { :query => @selector, :out => "#map_reduce" } ).find({}, :sort => @sort, :limit => @limit).to_a
         rescue
           raise "Error: could not execute map reduce function"
         end
