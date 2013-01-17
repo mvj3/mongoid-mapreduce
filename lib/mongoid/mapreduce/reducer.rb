@@ -28,6 +28,8 @@ module Mongoid
         @formula_name = options[:formula]
         @options = options
         @fields = {}
+        @sort = options[:sort] || [[:_id, Mongo::ASCENDING]] # [[:value, Mongo::DESCENDING]]
+        @limit = options[:limit] || 0
 
         if options.key?(:fields)
           options[:fields].each do |f|
@@ -56,6 +58,7 @@ module Mongoid
       # Returns nothing.
       def field(sym, options={})
         options[:type] ||= Integer
+        options[:as] ||= sym
         @fields[sym.to_sym] = options
       end
 

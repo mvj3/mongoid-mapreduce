@@ -52,7 +52,7 @@ module Mongoid
         # Returns Results
         def process(collection)
           return collection.inject(Results.new) do |h, k|
-            key = k.values[0].to_s =~ /(^[-+]?[0-9]+$)|(\.0+)$/ ? Integer(k.values[0]) : Float(k.values[0])
+            key = k.values[0]
             val = serialize(k.values[1].is_a?(String) ? k.values[1].split(',') : k.values[1], @field_type)
             h << Document.new(:_key_name => @field_name, :_key_value => key, key.to_s => val, @count_field => val)
           end
