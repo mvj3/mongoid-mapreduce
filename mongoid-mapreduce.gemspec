@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.summary = 'Simple map-reduce functionality for your Mongoid models'
   s.description = 'Mongoid MapReduce provides simple aggregation features for your Mongoid models'
 
+  s.add_dependency 'mongo'
   s.add_dependency 'mongoid'
   s.add_dependency 'bson_ext'
   s.add_development_dependency 'growl'

@@ -11,7 +11,7 @@ module Mongoid
       #
       # Returns a Hash of results
       def map_reduce(map_key=:_id, options={}, &block)
-        options[:map_key] = map_key
+        options[:map_key] = Array(map_key)
         reducer = Reducer.new(self, criteria.selector, options)
         reducer.instance_eval(&block) if block.present?
         reducer.run

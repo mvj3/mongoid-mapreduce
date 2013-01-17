@@ -69,7 +69,8 @@ module Mongoid
       def run
         begin
           coll = @klass.where(@selector).map_reduce(formula.map, formula.reduce).out(:replace => "#{@klass.collection_name}_#{Time.now.to_i}").find.to_a
-        rescue
+        rescue => e
+          puts [e, e.backtrace].flatten.join("\n")
           raise "Error: could not execute map reduce function"
         end
 
