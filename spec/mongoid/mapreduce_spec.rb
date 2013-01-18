@@ -15,7 +15,7 @@ describe Mongoid::MapReduce do
 
     it 'can be really, really simple' do
       r = Employee.map_reduce
-      r.length.should eql 3
+      r.count.should eql 3
     end
 
     describe 'criteria' do

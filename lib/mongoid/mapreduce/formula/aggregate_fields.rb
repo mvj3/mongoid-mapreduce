@@ -11,7 +11,7 @@ module Mongoid
           options[:map_key] ||= :_id
           options[:count_field] ||= :_count
 
-          @map_key = options[:map_key]
+          @map_key = options[:map_key][0].to_s # only support one field
           @map_key_as = options[:map_key_as] || @map_key
           @count_field = options[:count_field]
           @fields = fields
@@ -22,11 +22,12 @@ module Mongoid
         #
         # Returns String
         def map
+          str = "[#{[1, @fields.collect{|k,v| "this.#{k}"}].flatten.join(", ")}]"
           fn =  "function() { "
-          if @map_key.first == "("
-            fn << "emit (#{@map_key}, [#{[1, @fields.collect{|k,v| "this.#{k}"}].flatten.join(", ")}]); "
+          if @map_key[0] == "("
+            fn << "emit (#{@map_key}, #{str}); "
           else
-            fn <<   "emit (this.#{@map_key}, [#{[1, @fields.collect{|k,v| "this.#{k}"}].flatten.join(", ")}]); "
+            fn << "emit (this.#{@map_key}, #{str}); "
           end
           fn << "}"
         end
